@@ -11,6 +11,8 @@ const express = require('express'),
     hdb_callout = require('./utility/harperDBCallout'),
     http = require('http'),
     https = require('https'),
+    winston = require('winston'),
+    log_utils = require('./utility/logUtils'),
     fs = require('fs');
 
 const config = require('./config/config.json');
@@ -38,7 +40,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // route
-var main = require('./routes/main'),
+let main = require('./routes/main'),
     login = require('./routes/login'),
     security = require('./routes/security'),
     explore = require('./routes/explore'),
@@ -68,15 +70,14 @@ passport.use(new LocalStrategy({
     passReqToCallback: true
 },
     function (req, username, password, done) {
-        var call_object = {
+        let call_object = {
             username: username,
             password: password,
             endpoint_url: req.body.endpoint_url,
             endpoint_port: req.body.endpoint_port
-
         };
 
-        var operation = {
+        let operation = {
             operation: 'user_info'
         };
         hdb_callout.callHarperDB(call_object, operation, function (err, user) {
@@ -95,17 +96,12 @@ passport.use(new LocalStrategy({
                 return done(null, false, {
                     message: JSON.stringify(user)
                 });
-            }
-            else {
+            } else {
                 return done(null, false, {
                     message: 'Invalid credentials'
                 });
             }
-
         });
-
-
-
     }
 ));
 passport.serializeUser(function (user, done) {
@@ -118,7 +114,10 @@ passport.deserializeUser(function (user, done) {
 
 runServer();
 
-function runServer() {
+async function runServer() {
+    await log_utils.initLogger().catch((e) => {
+        console.error(`got an error initializing logger ${e}, using default Console logger.`);
+    });
     if (process.version >= 'v8.11.0') {
         let http_port = config.http_port;
         if (!http_port && !config.https_port) {
@@ -126,8 +125,9 @@ function runServer() {
         }
 
         if (http_port) {
-            http.createServer(app).listen(http_port, () => {                
-                console.log('HarperDB Studio running on port ' + http_port);
+            http.createServer(app).listen(http_port, () => {
+                winston.info(`HarperDB Studio running on port ${http_port}`);
+                console.log(`HarperDB Studio running on port ${http_port}`);
             });
         }
 
@@ -139,6 +139,7 @@ function runServer() {
 
             https.createServer(credentials, app)
                 .listen(config.https_port, function () {
+	                winston.info(`HarperDB Studio running on port  ${config.https_port}`);
                     console.log('HarperDB Studio running on port ' + config.https_port);
                 });
         }
@@ -146,5 +147,3 @@ function runServer() {
     else
         console.log(" HarperDB Studio requires Node.js version 8.11 or higher");
 }
-
-
