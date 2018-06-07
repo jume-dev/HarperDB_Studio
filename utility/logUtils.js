@@ -51,9 +51,13 @@ async function initLogger() {
 	}
 
 	if(config && config.log_location) {
-		let valid_path = await verifyLogLocation(config.log_location).catch( (e) => {
+		let valid_path = undefined;
+		try {
+			valid_path = await verifyLogLocation(config.log_location);
+		} catch(e) {
 			console.error(`invalid log location ${config.log_location}, defaulting to ${log_path}`);
-		});
+		}
+
 		if(valid_path) {
 			log_path = config.log_location;
 		}

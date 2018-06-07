@@ -3,5 +3,5 @@
   "default_port":9925,
   "http_port":8080,
   "logging_level":"info",
-  "log_location":"./hdb_studio_log.log"
+  "log_location":"./log/hdb_studio_log.log"
 }

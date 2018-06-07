@@ -115,9 +115,12 @@ passport.deserializeUser(function (user, done) {
 runServer();
 
 async function runServer() {
-    await log_utils.initLogger().catch((e) => {
+    try {
+	    await log_utils.initLogger();
+    } catch(e) {
         console.error(`got an error initializing logger ${e}, using default Console logger.`);
-    });
+    }
+
     if (process.version >= 'v8.11.0') {
         let http_port = config.http_port;
         if (!http_port && !config.https_port) {
