@@ -1,13 +1,11 @@
-var passport = require('passport');
+var passport = require("passport");
 
-const express = require('express')
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-
-router.get('/', function (req, res) {
-    req.logout();
-    res.redirect('/login');
+router.get("/", function(req, res) {
+  req.logout();
+  res.redirect("/login");
 });
-
 
 module.exports = router;
