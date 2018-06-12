@@ -2,7 +2,7 @@
   "name": "harperdb_studio",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "hdb_studio.js",
   "scripts": {
     "test": "mocha"
   },
