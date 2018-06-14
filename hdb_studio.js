@@ -118,7 +118,7 @@ async function runServer() {
     try {
 	    await log_utils.initLogger();
     } catch(e) {
-        console.error(`got an error initializing logger ${e}, using default Console logger.`);
+        console.error(`got an error initializing logger ${e}, check your logger settings in config and restart the studio.`);
     }
 
     if (process.version >= 'v8.11.0') {
@@ -147,6 +147,7 @@ async function runServer() {
                 });
         }
     }
-    else
-        console.log(" HarperDB Studio requires Node.js version 8.11 or higher");
+    else {
+	    console.log(" HarperDB Studio requires Node.js version 8.11 or higher");
+    }
 }
