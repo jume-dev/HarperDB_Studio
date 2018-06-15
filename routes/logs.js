@@ -2,14 +2,10 @@ const express = require("express"),
   router = express.Router(),
   hdb_callout = require("../utility/harperDBCallout"),
   reduceTypeLogs = require("../utility/reduceTypeLogs"),
-  isAuthenticated = require("../utility/checkAuthenticate"),
+  isAuthenticated = require("../utility/checkAuthenticate").isAuthenticated,
   mapDynamicToStableObject = require("../utility/mapDynamicToStableObject");
 
-router.get("/", function(req, res) {
-  if (!req.user || !req.user.active || !req.user.password) {
-    return res.redirect("/login?ref=logs");
-  }
-
+router.get("/", isAuthenticated, function(req, res) {
   var operation = {
     operation: "read_log",
     limit: 500,
@@ -30,8 +26,7 @@ router.get("/", function(req, res) {
     return res.render("logs", {
       user: req.user,
       logs: JSON.stringify(mapDynamicToStableObject(reduceTypeLogs(logs))),
-      error: err,
-      nameOfUser: req.user.username
+      error: err
     });
   });
 });
@@ -61,14 +56,14 @@ router.post("/search", isAuthenticated, function(req, res) {
 router.get("/individual/:logDetail", isAuthenticated, function(req, res) {
   var decoded = new Buffer(req.params.logDetail, "base64").toString("ascii");
   res.render("log_individual", {
-    nameOfUser: req.user.username,
+    user: req.user,
     log: JSON.parse(decoded)
   });
 });
 
 router.get("/search", isAuthenticated, function(req, res) {
   res.render("logs_advance", {
-    nameOfUser: req.user.username
+    user: req.user
   });
 });
 

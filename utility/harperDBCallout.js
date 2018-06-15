@@ -27,7 +27,7 @@ function callHarperDB(call_object, operation, callback) {
     hdb_res.on("end", function() {
       var body = Buffer.concat(chunks);
       if (isJson(body)) {
-        return callback(null, JSON.parse(body));
+        return callback(null, JSON.parse(body), hdb_res.statusCode);
       } else {
         return callback(body, null);
       }

@@ -53,7 +53,9 @@ html
     block link
       -var selected  = 'Main';
 
-    -var menu = { 'Main': '/main', 'Explore': '/explore', 'Schema': '/schema', 'Security': '/security', 'Health': '/health', 'Logs': '/logs', 'Help': '/help'};
+    - var menu = { 'Main': '/main', 'Explore': '/explore', 'Schema': '/schema', 'Health': '/health', 'Help': '/help'};
+    if user['super_admin'] == true
+      - menu = { 'Main': '/main', 'Explore': '/explore', 'Schema': '/schema', 'Security': '/security', 'Health': '/health', 'Logs': '/logs', 'Help': '/help'};    
     -var icons = { 'Main': 'icon-home', 'Explore': 'fa fa-compass', 'Schema': 'fa fa-share-alt', 'Security': 'fa fa-users', 'Health': 'fa fa-line-chart', 'Logs': 'fa fa-cube', 'Help': 'fa fa-question'};
     // Side Navbar
     nav.side-navbar

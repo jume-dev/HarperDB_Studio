@@ -1,10 +1,11 @@
 const express = require("express"),
   router = express.Router(),
   hdb_callout = require("../utility/harperDBCallout"),
-  isAuthenticated = require("../utility/checkAuthenticate"),
+  isAuthenticated = require("../utility/checkAuthenticate").isAuthenticated,
+  isSuperAdmin = require("../utility/checkAuthenticate").isSuperAdmin,
   mapObject = require("../utility/mapDescribeAllToAddRole");
 
-router.get("/", isAuthenticated, function(req, res) {
+router.get("/", [isAuthenticated, isSuperAdmin], function(req, res) {
   var operation = {
     operation: "list_users"
   };
@@ -21,13 +22,15 @@ router.get("/", isAuthenticated, function(req, res) {
     return res.render("security", {
       user: req.user,
       users: JSON.stringify(users),
-      error: err,
-      nameOfUser: req.user.username
+      error: err
     });
   });
 });
 
-router.post("/update_user", isAuthenticated, function(req, res) {
+router.post("/update_user", [isAuthenticated, isSuperAdmin], function(
+  req,
+  res
+) {
   if (!req.user || !req.user.active || !req.user.password) {
     return res.redirect("/login?ref=security");
   }
@@ -66,7 +69,7 @@ router.post("/update_user", isAuthenticated, function(req, res) {
   });
 });
 
-router.get("/add_role", isAuthenticated, function(req, res) {
+router.get("/add_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   var call_object = {
     username: req.user.username,
     password: req.user.password,
@@ -81,12 +84,12 @@ router.get("/add_role", isAuthenticated, function(req, res) {
     res.render("add_role", {
       schemas: result,
       flatenSchema: JSON.stringify(mapObject(result)),
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });
 
-router.post("/add_role", isAuthenticated, function(req, res) {
+router.post("/add_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   var call_object = {
     username: req.user.username,
     password: req.user.password,
@@ -106,7 +109,7 @@ router.post("/add_role", isAuthenticated, function(req, res) {
   );
 });
 
-router.post("/alter_role", isAuthenticated, function(req, res) {
+router.post("/alter_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   var call_object = {
     username: req.user.username,
     password: req.user.password,
@@ -126,17 +129,17 @@ router.post("/alter_role", isAuthenticated, function(req, res) {
   );
 });
 
-router.get("/add_user", isAuthenticated, function(req, res) {
+router.get("/add_user", [isAuthenticated, isSuperAdmin], function(req, res) {
   res.render("add_user", {
-    nameOfUser: req.user.username
+    user: req.user
   });
 });
 
-router.get("/edit_role", isAuthenticated, function(req, res) {
+router.get("/edit_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   Promise.all([getSchemaAll(req, res), getListRole(req, res)]).then(
     resultArray => {
       res.render("edit_role", {
-        nameOfUser: req.user.username,
+        user: req.user,
         schemas: resultArray[0],
         flatenSchema: JSON.stringify(mapObject(resultArray[0])),
         roles: resultArray[1]
@@ -145,14 +148,14 @@ router.get("/edit_role", isAuthenticated, function(req, res) {
   );
 });
 
-router.post("/edit_user", isAuthenticated, function(req, res) {
+router.post("/edit_user", [isAuthenticated, isSuperAdmin], function(req, res) {
   res.render("edit_user", {
     user: JSON.parse(req.body.user),
-    nameOfUser: req.user.username
+    user: req.user
   });
 });
 
-router.post("/getalluser", isAuthenticated, function(req, res) {
+router.post("/getalluser", [isAuthenticated, isSuperAdmin], function(req, res) {
   var connection = {
     username: req.user.username,
     password: req.user.password,
@@ -171,7 +174,7 @@ router.post("/getalluser", isAuthenticated, function(req, res) {
   });
 });
 
-router.post("/getallrole", isAuthenticated, function(req, res) {
+router.post("/getallrole", [isAuthenticated, isSuperAdmin], function(req, res) {
   var connection = {
     username: req.user.username,
     password: req.user.password,
@@ -190,7 +193,7 @@ router.post("/getallrole", isAuthenticated, function(req, res) {
   });
 });
 
-router.post("/add_user", isAuthenticated, function(req, res) {
+router.post("/add_user", [isAuthenticated, isSuperAdmin], function(req, res) {
   var connection = {
     username: req.user.username,
     password: req.user.password,
@@ -214,7 +217,7 @@ router.post("/add_user", isAuthenticated, function(req, res) {
   });
 });
 
-router.post("/drop_user", isAuthenticated, function(req, res) {
+router.post("/drop_user", [isAuthenticated, isSuperAdmin], function(req, res) {
   var connection = {
     username: req.user.username,
     password: req.user.password,
@@ -235,7 +238,7 @@ router.post("/drop_user", isAuthenticated, function(req, res) {
   });
 });
 
-router.post("/drop_role", isAuthenticated, function(req, res) {
+router.post("/drop_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   var connection = {
     username: req.user.username,
     password: req.user.password,

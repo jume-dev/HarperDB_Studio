@@ -1,7 +1,7 @@
 const express = require("express"),
   router = express.Router(),
   hdb_callout = require("../utility/harperDBCallout"),
-  isAuthenticated = require("../utility/checkAuthenticate"),
+  isAuthenticated = require("../utility/checkAuthenticate").isAuthenticated,
   breadcrumb = require("../utility/breadcrumb"),
   sortSchemas = require("../utility/sortSchemas");
 
@@ -20,7 +20,7 @@ router.get("/", [isAuthenticated, breadcrumb], function(req, res) {
   hdb_callout.callHarperDB(call_object, operation, function(err, allSchema) {
     return res.render("schema", {
       schemas: sortSchemas(allSchema),
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });
@@ -58,7 +58,7 @@ router.post("/", isAuthenticated, function(req, res) {
       return res.render("schema", {
         message: JSON.stringify(success),
         schemas: allSchema,
-        nameOfUser: req.user.username
+        user: req.user
       });
     });
   });
@@ -81,7 +81,7 @@ router.get("/:schemaName", isAuthenticated, function(req, res) {
     res.render("schema_name", {
       schemaName: req.params.schemaName,
       schema: schema,
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });
@@ -112,7 +112,7 @@ router.post("/addtable/:schemaName", isAuthenticated, function(req, res) {
         schemaName: req.params.schemaName,
         schema: schema,
         message: JSON.stringify(success),
-        nameOfUser: req.user.username
+        user: req.user
       });
     });
   });
@@ -161,7 +161,7 @@ router.post("/upload_csv/:schemaName", isAuthenticated, function(req, res) {
         schemaName: req.params.schemaName,
         schema: schema,
         message: JSON.stringify(success),
-        nameOfUser: req.user.username
+        user: req.user
       });
     });
   });
@@ -262,7 +262,7 @@ router.post("/csv", isAuthenticated, function(req, res) {
       return res.render("schema", {
         message: JSON.stringify(success),
         schemas: allSchema,
-        nameOfUser: req.user.username
+        user: req.user
       });
     });
   });
