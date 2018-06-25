@@ -113,7 +113,7 @@ function toggleActive(username) {
     for (u in users) {
         if (users[u].username == username) {
             user = users[u];
-
+            console.log(JSON.stringify(user));
             if (user.active) {
                 user.active = false;
             } else {
@@ -122,7 +122,7 @@ function toggleActive(username) {
 
             $.ajax({
                 type: "POST",
-                url: 'security/update_user',
+                url: 'security/update_user_active',
                 data: user,
                 success: function () {
                     console.log('updated successfully');

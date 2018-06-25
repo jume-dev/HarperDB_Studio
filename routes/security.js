@@ -27,32 +27,15 @@ router.get("/", [isAuthenticated, isSuperAdmin], function(req, res) {
   });
 });
 
-router.post("/update_user", [isAuthenticated, isSuperAdmin], function(
+router.post("/update_user_active", [isAuthenticated, isSuperAdmin], function(
   req,
   res
 ) {
-  if (!req.user || !req.user.active || !req.user.password) {
-    return res.redirect("/login?ref=security");
-  }
-
-  if (!req.body) {
-    return res.send("missing body");
-  }
-
-  if (!req.body.username) {
-    return res.send("missing username");
-  }
-
   var operation = {
-    operation: "alter_user"
+    operation: "alter_user",
+    username: req.body.username,
+    active: JSON.parse(req.body.active)
   };
-
-  for (item in req.body) {
-    if (item.indexOf("role") < 0) operation[item] = req.body[item];
-    if (item === "role[id]") {
-      operation["role"] = req.body[item];
-    }
-  }
 
   var call_object = {
     username: req.user.username,
