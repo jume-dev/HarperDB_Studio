@@ -112,8 +112,7 @@ function toggleActive(username) {
 
     for (u in users) {
         if (users[u].username == username) {
-            user = users[u];
-            console.log(JSON.stringify(user));
+            user = users[u];            
             if (user.active) {
                 user.active = false;
             } else {
