@@ -12,9 +12,11 @@ const express = require("express"),
   http = require("http"),
   https = require("https"),
   fs = require("fs");
+const compare_version = require("version-comparison");
 
 const config = require("./config/config.json");
 const DEFAULT_HTTP_PORT = 61183;
+const MINIMUM_NODE_VERSION = "8.11.0";
 
 app.use(bodyParser.json());
 app.use(
@@ -135,30 +137,32 @@ passport.deserializeUser(function(user, done) {
 runServer();
 
 function runServer() {
-  if (process.version >= "v8.11.0") {
-    let http_port = config.http_port;
-    if (!http_port && !config.https_port) {
-      http_port = DEFAULT_HTTP_PORT;
-    }
+  if (compare_version(process.version, MINIMUM_NODE_VERSION) < 0) {
+    console.log(
+      `HarperDB Studio requires Node.js version ${MINIMUM_NODE_VERSION} or higher`
+    );
+    return;
+  }
 
-    if (http_port) {
-      http.createServer(app).listen(http_port, () => {
-        console.log("HarperDB Studio running on port " + http_port);
-      });
-    }
+  let http_port = config.http_port;
+  if (!http_port && !config.https_port) {
+    http_port = DEFAULT_HTTP_PORT;
+  }
 
-    if (config.https_port && config.https_key_path && config.https_cert_path) {
-      let credentials = {
-        key: fs.readFileSync(config.https_key_path),
-        cert: fs.readFileSync(config.https_cert_path)
-      };
+  if (http_port) {
+    http.createServer(app).listen(http_port, () => {
+      console.log("HarperDB Studio running on port " + http_port);
+    });
+  }
 
-      https
-        .createServer(credentials, app)
-        .listen(config.https_port, function() {
-          console.log("HarperDB Studio running on port " + config.https_port);
-        });
-    }
-  } else
-    console.log(" HarperDB Studio requires Node.js version 8.11 or higher");
+  if (config.https_port && config.https_key_path && config.https_cert_path) {
+    let credentials = {
+      key: fs.readFileSync(config.https_key_path),
+      cert: fs.readFileSync(config.https_cert_path)
+    };
+
+    https.createServer(credentials, app).listen(config.https_port, function() {
+      console.log("HarperDB Studio running on port " + config.https_port);
+    });
+  }
 }
