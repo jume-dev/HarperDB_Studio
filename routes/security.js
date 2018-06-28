@@ -52,6 +52,31 @@ router.post("/update_user_active", [isAuthenticated, isSuperAdmin], function(
   });
 });
 
+router.post("/update_user_password", [isAuthenticated, isSuperAdmin], function(
+  req,
+  res
+) {
+  var operation = {
+    operation: "alter_user",
+    username: req.body.username,
+    password: req.body.password
+  };
+
+  var call_object = {
+    username: req.user.username,
+    password: req.user.password,
+    endpoint_url: req.user.endpoint_url,
+    endpoint_port: req.user.endpoint_port
+  };
+
+  hdb_callout.callHarperDB(call_object, operation, function(err, success) {
+    if (err) {
+      return res.status(400).send(err);
+    }
+    return res.status(200).send(success);
+  });
+});
+
 router.get("/add_role", [isAuthenticated, isSuperAdmin], function(req, res) {
   var call_object = {
     username: req.user.username,
@@ -133,8 +158,7 @@ router.get("/edit_role", [isAuthenticated, isSuperAdmin], function(req, res) {
 
 router.post("/edit_user", [isAuthenticated, isSuperAdmin], function(req, res) {
   res.render("edit_user", {
-    user: JSON.parse(req.body.user),
-    user: req.user
+    user: JSON.parse(req.body.user)
   });
 });
 

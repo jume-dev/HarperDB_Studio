@@ -185,7 +185,7 @@ dropUser = function (username) {
 
 goToEditUser = function (username) {
     var user = null;
-
+    
     for (u in users) {
         if (users[u].username == username) {
             user = users[u];
@@ -221,10 +221,14 @@ var createUsersTable = function (allUser) {
         //Username
         var td = document.createElement('td');
         td.appendChild(document.createTextNode(user['username']));
+        td.setAttribute('onclick', 'goToEditUser("'+user['username']+'")');
+        td.setAttribute('style', 'cursor: pointer');
         tr.appendChild(td);
 
         // Role
         td = document.createElement('td');
+        td.setAttribute('onclick', 'goToEditUser("'+user['username']+'")');
+        td.setAttribute('style', 'cursor: pointer');
         td.appendChild(document.createTextNode(user.role != undefined ? user.role.role : 'no role'))
         tr.appendChild(td);
 
