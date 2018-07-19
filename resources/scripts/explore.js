@@ -290,7 +290,7 @@ var createChartElement = function (chartObj) {
     if (chartObj.length > 0) {
         for (var i = 0; i < chartObj.length; i++) {
             if (i == 6) break;
-            $('.row.d-flex').prepend('<div class="col-lg-4 mb-3"><div style="height: 300px; background-color: #C6C8CA;"><div class="chart_div"></div></div></div>')
+            $('.row.d-flex').prepend('<div class="col-lg-4 mb-3"><div style="height: 300px; background-color: white;"><div class="chart_div"></div></div></div>')
 
         }
         generateCharts(chartObj);

@@ -22,18 +22,19 @@ block content
                 .col-md-11
                     header
                         .pull-left.mr-3.midtitle.pb-2 #{user.username}
-                        .btn-group.pull-left
-                            button.btn.dropdown-toggle.minwidthcombobox(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Select Schema
-                            .dropdown-menu
-                                a.dropdown-item(href='#') Schema 1
-                                a.dropdown-item(href='#') Schema 2
-                                a.dropdown-item(href='#') Schema 3
+                        //- .btn-group.pull-left
+                        //-     button.btn.dropdown-toggle.minwidthcombobox(type='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false') Select Schema
+                        //-     .dropdown-menu
+                        //-         a.dropdown-item(href='#') Schema 1
+                        //-         a.dropdown-item(href='#') Schema 2
+                        //-         a.dropdown-item(href='#') Schema 3
                         .pull-right
                             if(user.active)
                                 input.js-switch(type="checkbox", checked, onchange='toggleActive("#{user.username}");')
                             else
                                 input.js-switch(type="checkbox", onchange='toggleActive("#{user.username}");')
-                        a.btn.btn-main.minwidthcombobox.pull-right.mr-5(href='sqlsearchchart.html') Copy User
+                        //- a.btn.btn-main.minwidthcombobox.pull-right.mr-5(href='sqlsearchchart.html') Copy User
+                        p.pull-right.mr-3 Active
                     .clear.pull-left.mt-2
                         input#newPassword.mr-1.pl-1(type='password', placeholder='password')
                         a.btn.btn-main.minwidthcombobox.pull-right.mr-5(onclick="resetPassword()") Reset Password
