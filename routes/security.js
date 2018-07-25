@@ -17,8 +17,6 @@ router.get("/", [isAuthenticated, isSuperAdmin], function(req, res) {
   };
 
   hdb_callout.callHarperDB(call_object, operation, function(err, users) {
-    // console.error(err);
-    // console.log(logs);
     return res.render("security", {
       user: req.user,
       users: JSON.stringify(users),

@@ -11,7 +11,10 @@ const express = require("express"),
   hdb_callout = require("./utility/harperDBCallout"),
   http = require("http"),
   https = require("https"),
+  winston = require("winston"),
+  log_utils = require("./utility/logUtils"),
   fs = require("fs");
+
 const compare_version = require("version-comparison");
 
 const config = require("./config/config.json");
@@ -47,7 +50,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // route
-var main = require("./routes/main"),
+let main = require("./routes/main"),
   login = require("./routes/login"),
   security = require("./routes/security"),
   explore = require("./routes/explore"),
@@ -136,7 +139,15 @@ passport.deserializeUser(function(user, done) {
 
 runServer();
 
-function runServer() {
+async function runServer() {
+  try {
+    await log_utils.initLogger();
+  } catch (e) {
+    console.error(
+      `got an error initializing logger ${e}, check your logger settings in config and restart the studio.`
+    );
+  }
+
   if (compare_version(process.version, MINIMUM_NODE_VERSION) < 0) {
     console.log(
       `HarperDB Studio requires Node.js version ${MINIMUM_NODE_VERSION} or higher`
