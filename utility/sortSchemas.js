@@ -13,7 +13,8 @@ sortSchemas = schemaObject => {
     tableNames.forEach(eachTable => {
       newSchemaObject[eachSchema][eachTable] =
         schemaObject[eachSchema][eachTable];
-      schemaObject[eachSchema][eachTable].attributes.sort(compare);
+      if (schemaObject[eachSchema][eachTable].attributes != undefined)
+        schemaObject[eachSchema][eachTable].attributes.sort(compare);
       newSchemaObject[eachSchema][eachTable].attributes =
         schemaObject[eachSchema][eachTable].attributes;
     });

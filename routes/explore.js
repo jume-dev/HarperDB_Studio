@@ -2,7 +2,7 @@ const express = require("express"),
   router = express.Router(),
   hdb_callout = require("./../utility/harperDBCallout"),
   reduceDescribeAllObject = require("./../utility/reduceDescribeAllObject"),
-  isAuthenticated = require("../utility/checkAuthenticate"),
+  isAuthenticated = require("../utility/checkAuthenticate").isAuthenticated,
   favorite = require("../utility/favoritesQuery"),
   mapDynamicToStableObject = require("../utility/mapDynamicToStableObject"),
   breadcrumb = require("../utility/breadcrumb"),
@@ -12,7 +12,7 @@ router.get("/", [isAuthenticated, breadcrumb], function(req, res) {
   favorite.getLivelink(req).then(recents => {
     res.render("explore", {
       recents: recents,
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });
@@ -39,7 +39,7 @@ router.get("/sql_search", isAuthenticated, function(req, res) {
     res.render("sql_search", {
       keywords: JSON.stringify(keywords),
       schemas: sortSchemas(result),
-      nameOfUser: req.user.username,
+      user: req.user,
       breadcrumb: {
         name: req.session.cur_url_name,
         path: req.session.cur_url_path
@@ -72,7 +72,7 @@ router.get("/sql_search_edit/:livelinkId", isAuthenticated, function(req, res) {
         res.render("sql_search", {
           keywords: JSON.stringify(keywords),
           schemas: sortSchemas(result),
-          nameOfUser: req.user.username,
+          user: req.user,
           breadcrumb: {
             name: req.session.cur_url_name,
             path: req.session.cur_url_path
@@ -108,7 +108,7 @@ router.get("/sql_search/:sqllink", isAuthenticated, function(req, res) {
       keywords: JSON.stringify(keywords),
       schemas: sortSchemas(result),
       sqlLink: Buffer.from(req.params.sqllink, "base64").toString(),
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });
@@ -132,7 +132,7 @@ router.get("/filter_search", isAuthenticated, function(req, res) {
     }
     res.render("filter_search", {
       schemas: JSON.stringify(sortSchemas(result)),
-      nameOfUser: req.user.username
+      user: req.user
     });
   });
 });

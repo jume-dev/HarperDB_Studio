@@ -10,4 +10,15 @@ var isAuthenticated = function(req, res, next) {
   }
 };
 
-module.exports = isAuthenticated;
+var isSuperAdmin = function(req, res, next) {
+  if (req.user.super_admin) return next();
+  else {
+    let ref = req.originalUrl.substr(1, req.originalUrl.length);
+    return res.redirect("/login?ref=" + ref);
+  }
+};
+
+module.exports = {
+  isAuthenticated: isAuthenticated,
+  isSuperAdmin: isSuperAdmin
+};

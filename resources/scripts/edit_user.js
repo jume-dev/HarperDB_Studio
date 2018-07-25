@@ -89,7 +89,7 @@ resetPassword = () => {
     console.log(user);
     $.ajax({
         type: "POST",
-        url: '/security/update_user',
+        url: '/security/update_user_password',
         data: user,
         success: function (res) {
             toastr.options = {
@@ -109,7 +109,7 @@ resetPassword = () => {
                 "showMethod": "fadeIn",
                 "hideMethod": "fadeOut"
             }
-            toastr.info(res.message);
+            toastr.info(JSON.stringify(res));
             console.log('updated password successfully');
             document.getElementById('thisUser').value = JSON.stringify(user);
         },

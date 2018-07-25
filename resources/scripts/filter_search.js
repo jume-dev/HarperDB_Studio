@@ -453,13 +453,13 @@ var buildSqlQuery = function () {
     if (first.length > 0) {
         var curValue = first[3].value.replace(/"/g, '\'');
         if (isNaN(parseFloat(curValue)) == true) {
-            curValue = "'" + curValue + "'";
+            curValue = "'" + curValue + "'";            
         }
         else {
             curValue = parseFloat(curValue);
 
-        }
-
+        }    
+            
         whereString = " WHERE " + first[1].value + " " + first[2].value + " " + curValue;
     }
 
@@ -471,7 +471,7 @@ var buildSqlQuery = function () {
             var curValue = null;
             if (i % 5 != 4) {
                 if (i % 5 == 1)
-                    curValue = "\"" + others[i].value + "\""
+                    curValue = others[i].value
                 else if (i % 5 == 3) {
                     curValue = others[i].value.replace(/"/g, '\'');
                     if (isNaN(curValue) == true)

@@ -112,8 +112,7 @@ function toggleActive(username) {
 
     for (u in users) {
         if (users[u].username == username) {
-            user = users[u];
-
+            user = users[u];            
             if (user.active) {
                 user.active = false;
             } else {
@@ -122,7 +121,7 @@ function toggleActive(username) {
 
             $.ajax({
                 type: "POST",
-                url: 'security/update_user',
+                url: 'security/update_user_active',
                 data: user,
                 success: function () {
                     console.log('updated successfully');
@@ -186,7 +185,7 @@ dropUser = function (username) {
 
 goToEditUser = function (username) {
     var user = null;
-
+    
     for (u in users) {
         if (users[u].username == username) {
             user = users[u];
@@ -222,10 +221,14 @@ var createUsersTable = function (allUser) {
         //Username
         var td = document.createElement('td');
         td.appendChild(document.createTextNode(user['username']));
+        td.setAttribute('onclick', 'goToEditUser("'+user['username']+'")');
+        td.setAttribute('style', 'cursor: pointer');
         tr.appendChild(td);
 
         // Role
         td = document.createElement('td');
+        td.setAttribute('onclick', 'goToEditUser("'+user['username']+'")');
+        td.setAttribute('style', 'cursor: pointer');
         td.appendChild(document.createTextNode(user.role != undefined ? user.role.role : 'no role'))
         tr.appendChild(td);
 
