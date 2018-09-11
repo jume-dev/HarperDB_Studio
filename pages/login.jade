@@ -38,13 +38,13 @@ html
                                 input(type="hidden" id="ref" value="#{ref}" name="ref")
                                 .form-group
                                     label.control-label(for='username') Username
-                                    input#username.form-control(name='username' type='text',
+                                    input#username.form-control(name='username' type='text', value='#{default_username}'
 
-                                    placeholder='', title='Please enter your username', required='' value='')
+                                    placeholder='', title='Please enter your username', required='')
                                 .form-group
                                     label.control-label(for='password') Password
                                     input#password.form-control(name='password' type='password'
-                                    title='Please enter your password' placeholder=''  required='' value='')
+                                    title='Please enter your password' placeholder=''  required='' value='#{default_password}')
 
                                 .panel.panel-filled.panel-c-accent.panel-collapse(style="margin-bottom: 10px")
                                     .panel-heading(style="padding: 7px")

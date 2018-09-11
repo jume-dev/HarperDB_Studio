@@ -5,5 +5,7 @@
   "https_port": 31283,
   "protocol": "http",
   "logging_level": "error",
-  "log_location": "./log/hdb_studio_log.log"
+  "log_location": "./log/hdb_studio_log.log",
+  "username": "admin",
+  "password": "admin!"
 }

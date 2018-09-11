@@ -13,7 +13,9 @@ router.get("/", function(req, res) {
     title: "Hey",
     ref: req.query.ref,
     default_host: config.default_host ? config.default_host : DEFAULT_HOST,
-    default_port: config.default_port ? config.default_port : DEFAULT_PORT
+    default_port: config.default_port ? config.default_port : DEFAULT_PORT,
+    default_username: config.username ? config.username : null,
+    default_password: config.password ? config.password : null
   };
   res.render("login", login_object);
   return;
