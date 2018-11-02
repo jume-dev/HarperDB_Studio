@@ -177,3 +177,5 @@ async function runServer() {
     });
   }
 }
+
+module.exports = app;

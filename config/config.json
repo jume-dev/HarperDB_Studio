@@ -1,7 +1,7 @@
 {
   "default_host": "localhost",
   "default_port": 9925,
-  "http_port": 8080,
+  "http_port": 7778,
   "https_port": 31283,
   "protocol": "http",
   "logging_level": "error",

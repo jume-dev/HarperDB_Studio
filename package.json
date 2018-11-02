@@ -2,10 +2,11 @@
   "name": "harperdb_studio",
   "version": "1.0.0",
   "description": "",
-  "main": "hdb_studio.js",
+  "main": "main.js",
   "scripts": {
     "test": "mocha",
-    "precommit": "pretty-quick --staged"
+    "precommit": "pretty-quick --staged",
+    "electron": "electron ."
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-sorted": "^0.2.0",
+    "electron": "^3.0.7",
     "husky": "^0.14.3",
     "mocha": "^5.0.1",
     "prettier": "^1.13.5",
