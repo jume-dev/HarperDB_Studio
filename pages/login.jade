@@ -36,6 +36,8 @@ html
                         .panel-body
                             form#loginForm(action='/login', novalidate='' method='post')
                                 input(type="hidden" id="ref" value="#{ref}" name="ref")
+                                .form-group(style="text-align: center;")
+                                    button(type="button" onclick="getHarperDB()").btn.btn-accent Download HarperDB
                                 .form-group
                                     label.control-label(for='username') Username
                                     input#username.form-control(name='username' type='text',
@@ -68,7 +70,7 @@ html
 
 
                                 div
-                                    button(type="submit").btn.btn-accent Login
+                                    button(type="submit").btn.btn-accent Login                                    
             // End main content
             // End wrapper
             // Vendor scripts
@@ -76,15 +78,48 @@ html
             script(src='vendor/jquery/dist/jquery.min.js')
             script(src='vendor/bootstrap/js/bootstrap.min.js')
             script(src='vendor/toastr/toastr.min.js')
+            script(src='../../js/platform.js')
             // App scripts
             script(src='scripts/luna.js')
             script.
                 $(document).ready(function () {
-                    let errMsg = document.getElementById('error').value;                
+                    let errMsg = document.getElementById('error').value;
                     if(errMsg != 'undefined'){
                         toastr.error(errMsg);
-
                     }
-
                 });
+                const getHarperDB = function (){
+                    let os = platform.os.family.toLowerCase().replace(/\s/g, "");
+                    let isDownload = false
+                    if(os.includes('window')){
+                        window.open("https://hub.docker.com/r/harperdb/hdb/");
+                    }
+                    else if (os.includes('linux') || os.includes('ubuntu') || os.includes('mint') || os.includes('debian')){
+                        os = 'linux'
+                        isDownload = true
+                    }
+                    else if (os.includes('mac') || os.includes('osx')){
+                        os = 'mac'
+                        isDownload = true
+                    }
+                    else if (os.includes('arm8')){
+                        os = 'ARM 8'
+                        isDownload = true
+                    }
+                    else if (os.includes('arm7')){
+                        os = 'ARM 7'
+                        isDownload = true
+                    }
+                    else if (os.includes('arm6')){
+                        os = 'ARM 6'
+                        isDownload = true
+                    }
+                    else {
+                        os = 'Linux'
+                        isDownload = true
+                    }
+                    if (isDownload){
+                        window.location.href = "https://products.harperdb.io/api/update?os=" + os
+                    }
+                }
 
