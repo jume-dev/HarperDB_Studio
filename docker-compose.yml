@@ -1,0 +1,14 @@
+version: '3'
+services:
+  studio:
+    build: .
+    ports:
+      - 9926:8080
+  harperdb:
+    image: harperdb/hdb
+    ports:
+      - 9925:9925
+    volumes:
+      - harperdb_hdb:/opt/HarperDB/hdb
+volumes:
+  harperdb_hdb:
