@@ -50,7 +50,11 @@ router.post("/", function(req, res, next) {
       return next(err);
     }
     if (!user) {
-      return res.render("login", { error: info.message });
+      return res.render("login", {
+        error: info.message,
+        default_host: req.body.endpoint_url,
+        default_port: req.body.endpoint_port
+      });
     }
     req.logIn(user, function(err) {
       if (err) {
