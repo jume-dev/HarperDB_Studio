@@ -4,6 +4,7 @@
   "description": "",
   "main": "hdb_studio.js",
   "scripts": {
+    "start": "node hdb_studio.js",
     "test": "mocha",
     "precommit": "pretty-quick --staged"
   },
